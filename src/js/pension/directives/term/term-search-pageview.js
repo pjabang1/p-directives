@@ -17,6 +17,7 @@ function termSearchPageview($parse) {
             //selection[0][0] is the DOM node
             //but we won't need that this time
             // var selector = element[0];
+            return true;
             var chart;
             //var color = d3.scale.linear().domain([0,1]).range(["#fed900","#39c"]);
             var color = ["#fed900", "#39c"];

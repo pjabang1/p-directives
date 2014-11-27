@@ -8,6 +8,7 @@ var gulp = require('gulp'),
 
 var paths = {
     js: 'src/js/**/*.*',
+    data: 'src/data/**/*.*',
     fonts: 'src/fonts/**.*',
     images: 'src/img/**/*.*',
     templates: 'src/js/**/*.html',
@@ -31,7 +32,7 @@ gulp.task('usemin', function() {
 /**
  * Copy assets
  */
-gulp.task('copy-assets', ['copy-images', 'copy-templates', 'concatenate-templates', 'copy-fonts', 'copy-bower_fonts']);
+gulp.task('copy-assets', ['copy-images', 'copy-templates', 'concatenate-templates', 'copy-fonts', 'copy-data', 'copy-bower_fonts']);
 
 gulp.task('copy-images', function() {
     return gulp.src(paths.images)
@@ -56,6 +57,12 @@ gulp.task('copy-fonts', function() {
             .pipe(gulp.dest('dist/fonts'));
 });
 
+gulp.task('copy-data', function() {
+    return gulp.src(paths.data)
+            .pipe(gulp.dest('dist/data'));
+});
+
+
 gulp.task('copy-bower_fonts', function() {
     return gulp.src(paths.bower_fonts)
             .pipe(gulp.dest('dist/lib'));
@@ -70,6 +77,7 @@ gulp.task('watch', function() {
     gulp.watch([paths.templates], ['copy-templates', 'concatenate-templates']);
     // gulp.watch([paths.templates], []);
     gulp.watch([paths.fonts], ['copy-fonts']);
+    gulp.watch([paths.data], ['copy-data']);
     gulp.watch([paths.bower_fonts], ['copy-bower_fonts']);
 });
 

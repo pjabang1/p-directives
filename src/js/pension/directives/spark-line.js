@@ -38,7 +38,7 @@ function sparkLine($parse) {
                 });
                 
                
-                console.log(data);
+                // console.log(data);
                 
                 x.domain(d3.extent(data, function(d) {
                     return d.date;

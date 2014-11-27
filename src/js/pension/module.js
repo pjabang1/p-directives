@@ -1,1 +1,1 @@
-angular.module('Pension', ['ui.bootstrap', 'ui.router', 'ngCookies', 'chart.js', 'ngTable', 'uiSlider']);
+angular.module('Pension', ['ui.bootstrap', 'ui.router', 'ngCookies', 'ngTable', 'uiSlider']);
