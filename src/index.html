@@ -57,6 +57,9 @@
         <!-- build:js lib/angular/angular.js -->
         <script type="text/javascript" src="bower_components/angular/angular.js"></script>
         <!-- endbuild -->
+        <!-- build:js lib/angular-animate/angular-animate.min.js -->
+        <script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"></script>
+        <!-- endbuild -->
         <!-- build:js lib/angular-cookies/angular-cookies.js -->
         <script type="text/javascript" src="bower_components/angular-cookies/angular-cookies.js"></script>
         <!-- endbuild -->
@@ -73,8 +76,8 @@
         <script src="bower_components/ng-table/ng-table.min.js"></script>
         <!-- endbuild -->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-touch.min.js"></script>
-        <!-- build:js lib/angular-slider/angular-slider.min.js -->
-        <script src="js/lib/angular-slider/angular-slider.min.js"></script>
+        <!-- build:js lib/angular-slider/slider.min.js -->
+        <script src="js/lib/angular-slider/slider.js"></script>
         <!-- endbuild -->
 
 
@@ -83,9 +86,7 @@
     </head>
     <body ng-controller="MasterCtrl">
         <div id="page-wrapper">
-
             <!-- Sidebar -->
-
             <!-- End Sidebar -->
 
             <div id="content-wrapper">
@@ -97,8 +98,8 @@
                         <div class="col-xs-12">
                             <div class="user pull-right">
                                 <ul class="nav navbar-nav">
-                                    <li><a href="#">Investments</a></li>
-                                    <li><a href="#">Fund Managers</a></li>
+                                    <li><a href="#/list-funds">Investments</a></li>
+                                    <li><a href="#/view-fund">Fund Managers</a></li>
                                     <li><a href="#">Tools</a></li>
                                 </ul>
                             </div>
@@ -115,40 +116,27 @@
                             </div>
                         </div>
                     </div>
-                    <div class="" id="search-section">
-                        <search-section></search-section>
-                    </div>
-                    <div class="" id="sector-thumbnails">
-                        <sector-thumbnails></sector-thumbnails>
-                    </div>
-                    <div class="" id="latest-reviews">
-                        <latest-reviews></latest-reviews>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div leading-sectors class="col-xs-5"></div>
-                            <div class="col-xs-7 widget" height="500">
-                                <div line-chart class="widget-body large">
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                   
 
 
                     <!-- End Header Bar -->
 
                     <!-- Main Content -->
-                    <section data-ui-view></section>
+                    <section data-ui-view>
+                        
+                    </section>
 
                 </div><!-- End Page Content -->
             </div><!-- End Content Wrapper -->
+            
             <div class="row footer">
                 <div class="col-xs-12">
                     <hr />
                     <center>Yell.com</center>
                 </div>
             </div>
+            
+            
         </div><!-- End Page Wrapper -->
 
         <script type="text/ng-template" id="dashboard.html">
@@ -400,6 +388,10 @@
         <script type="text/javascript" src="js/pension/directives/loading.js"></script>
         <script type="text/javascript" src="js/pension/directives/tab-metric.js"></script>
         <script type="text/javascript" src="js/pension/controllers/term/term-search-ctrl.js"></script>
+        
+        <script type="text/javascript" src="js/pension/controllers/sections/list-funds-ctrl.js"></script>
+        <script type="text/javascript" src="js/pension/controllers/sections/view-fund-ctrl.js"></script>
+        
         <script type="text/javascript" src="js/pension/directives/term/term-search.js"></script>
         <script type="text/javascript" src="js/pension/controllers/term/term-search-pageview-ctrl.js"></script>
         <script type="text/javascript" src="js/pension/directives/term/term-search-pageview.js"></script>

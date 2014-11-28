@@ -17,8 +17,8 @@ angular.module('Pension').controller('SearchSectionCtrl', ['$scope', function($s
         
         $scope.value = 5;
         $scope.values = {
-            low: 25,
-            high: 40
+            min: 0,
+            max: 50
         };
         $scope.scale = function(value) {
             return Math.pow(value, 3);
@@ -48,4 +48,6 @@ angular.module('Pension').controller('SearchSectionCtrl', ['$scope', function($s
         $scope.fireResizeEvent = function() {
             $scope.$broadcast('refreshSlider');
         };
+        
+        $scope.currencyFormatting = function(value) { return value.toString() + " $" }
     }]);

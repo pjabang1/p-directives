@@ -13,7 +13,17 @@ angular.module('Pension').config(['$stateProvider', '$urlRouterProvider',
     $stateProvider
         .state('index', {
             url: '/',
-            templateUrl: 'dashboard.html'
+            templateUrl: 'pension/tpls/index.html'
+        })
+        .state('list-funds', {
+            url: '/list-funds',
+            controller: 'ListFundsCtrl',
+            templateUrl: 'pension/tpls/list-funds.html'
+        })
+         .state('view-fund', {
+            url: '/view-fund/:phoneId',
+            controller: 'ViewFundCtrl',
+            templateUrl: 'pension/tpls/view-fund.html'
         })
         .state('tables', {
             url: '/tables', 
