@@ -17,7 +17,7 @@ angular.module('Pension').controller('SearchSectionCtrl', ['$scope', function($s
         
         $scope.value = 5;
         $scope.values = {
-            min: 0,
+            min: 1,
             max: 50
         };
         $scope.scale = function(value) {
