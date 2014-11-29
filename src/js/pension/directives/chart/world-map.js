@@ -24,8 +24,8 @@ function worldMap($parse) {
             // console.log("log");
             // var $container = "container";
             var $element = element[0];
-            var $topoUrl = "data/world-topo-min.json";
-            var $dataUrl = "data/country-capitals.csv";
+            var $topoUrl = "./data/world-topo-min.json";
+            var $dataUrl = "./data/country-capitals.csv";
 
             d3.select(window).on("resize", throttle);
 

@@ -15,7 +15,7 @@ function lineChart($parse) {
         link: function(scope, element, attrs) {
 
             var chart;
-            d3.json('../data/cumulativeLineData.json', function(data) {
+            d3.json('./data/cumulativeLineData.json', function(data) {
                 nv.addGraph(function() {
                     chart = nv.models.cumulativeLineChart()
                             .x(function(d) {

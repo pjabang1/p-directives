@@ -719,8 +719,8 @@ function worldMap($parse) {
             // console.log("log");
             // var $container = "container";
             var $element = element[0];
-            var $topoUrl = "../data/world-topo-min.json";
-            var $dataUrl = "../data/country-capitals.csv";
+            var $topoUrl = "./data/world-topo-min.json";
+            var $dataUrl = "./data/country-capitals.csv";
 
             d3.select(window).on("resize", throttle);
 
@@ -964,7 +964,7 @@ function lineChart($parse) {
         link: function(scope, element, attrs) {
 
             var chart;
-            d3.json('../data/cumulativeLineData.json', function(data) {
+            d3.json('./data/cumulativeLineData.json', function(data) {
                 nv.addGraph(function() {
                     chart = nv.models.cumulativeLineChart()
                             .x(function(d) {
