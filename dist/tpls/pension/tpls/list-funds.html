@@ -1,13 +1,13 @@
 <div class="container" id="list-funds">
     <div class="row margin-top">
-        <div class="col-xs-12 breadcrumb-links">
+        <div class="col-md-12 breadcrumb-links">
             <a href="#/">Home</a> / List Funds
             <h3 class="pull-right">Investment Funds : {{ data.totalFunds }} funds</h3>
 
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-3 filter-box">
+        <div class="col-md-3 filter-box">
             <form role="form">
                 <div class="form-group">
                     <input type="text" ng-model="selected" typeahead="fund.fondnamn for fund in funds | filter:$viewValue | limitTo:15" class="form-control" id="FundName" placeholder="Fund Name" tooltip="Some helper information to appear here"  tooltip-trigger="focus" tooltip-placement="right">
@@ -36,10 +36,10 @@
                 </div>
                 <hr />
                 <div class="form-group btn-group">
-                    <label class="btn btn-primary col-xs-3" ng-model="checkModel.left" btn-checkbox><span class="small">kr</span> SEK</label>
-                    <label class="btn btn-primary col-xs-3" ng-model="checkModel.middle" btn-checkbox><span class="small">&dollar;</span> USD</label>
-                    <label class="btn btn-primary col-xs-3" ng-model="checkModel.right" btn-checkbox><span class="small">kr</span> NOK </label>
-					<label class="btn btn-primary col-xs-3" ng-model="checkModel.right" btn-checkbox><span class="small">&euro;</span> EUR</label>
+                    <label class="btn btn-primary col-md-3" ng-model="checkModel.left" btn-checkbox><span class="small">kr</span> SEK</label>
+                    <label class="btn btn-primary col-md-3" ng-model="checkModel.middle" btn-checkbox><span class="small">&dollar;</span> USD</label>
+                    <label class="btn btn-primary col-md-3" ng-model="checkModel.right" btn-checkbox><span class="small">kr</span> NOK </label>
+					<label class="btn btn-primary col-md-3" ng-model="checkModel.right" btn-checkbox><span class="small">&euro;</span> EUR</label>
                 </div>
                 <div class="">
                     <label for="Fund Type 1">Fund Types</label>
@@ -47,16 +47,16 @@
                 <hr />
 				<div class="row">
 					<div class="checkbox">
-						<label class="col-xs-6">
+						<label class="col-md-6">
 							<input type="checkbox"> Balanced Funds
 						</label>
-						<label class="col-xs-6">
+						<label class="col-md-6">
 							<input type="checkbox"> Equity Funds
 						</label>
-						<label class="col-xs-6">
+						<label class="col-md-6">
 							<input type="checkbox"> Generation Funds
 						</label>
-						<label class="col-xs-6">
+						<label class="col-md-6">
 							<input type="checkbox"> Fixed Income
 						</label>
 					</div>
@@ -83,7 +83,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-xs-9" loading-container="tableParams.settings().$loading">
+        <div class="col-md-9" loading-container="tableParams.settings().$loading">
 			<table ng-table="tableParams" class="table">
 				<tr ng-repeat="fund in $data">
 					<td data-title="'Fond Namn'" sortable="'fondnamn'">
