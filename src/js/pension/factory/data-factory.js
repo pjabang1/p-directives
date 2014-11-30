@@ -5,21 +5,29 @@ angular.module('Pension')
 				var urlBase = 'http://107.170.53.98/pension-fund/api/web/app.php';
 				var dataFactory = {};
 
-				dataFactory.countries = function() {
-					return $http.get(urlBase);
+				dataFactory.getFundDetails = function(fund) {
+					return $http.get(urlBase + '/fund/details', {
+						params: {fund: fund}
+					});
 				};
 
-				dataFactory.details = function() {
-					return $http.get(urlBase);
+				dataFactory.getFundSectors = function(fund) {
+					return $http.get(urlBase + '/fund/sectors', {
+						params: {fund: fund}
+					});
 				};
-				
+
+				dataFactory.getFundCountries = function(fund) {
+					return $http.get(urlBase + '/fund/countries', {
+						params: {fund: fund}
+					});
+				};
+
 				dataFactory.getFunds = function() {
 					return $http.get(urlBase + '/fund/funds');
 				};
 
-				dataFactory.sectors = function() {
-					return $http.get(urlBase);
-				};
+
 
 				dataFactory.listCountries = function() {
 					return $http.get(urlBase);

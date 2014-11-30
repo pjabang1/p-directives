@@ -86,15 +86,13 @@
         <div class="col-xs-9" loading-container="tableParams.settings().$loading">
 			<table ng-table="tableParams" class="table">
 				<tr ng-repeat="fund in $data">
-					<td data-title="'Fond Nummer'" sortable="'fondnummer'">
-						{{fund.fondnummer}}
+					<td data-title="'Fond Namn'" sortable="'fondnamn'">
+						<a ng-href="#/view-fund/{{fund.fondnummer}}">{{fund.fondnamn}}<a>
 					</td>
 					<td data-title="'Fond Bolag'" sortable="'fondbolag'">
 						{{fund.fondbolag}}
 					</td>
-					<td data-title="'Fond Namn'" sortable="'fondnamn'">
-						{{fund.fondnamn}}
-					</td>
+					
 					<td data-title="'Fond Kategori'" sortable="'fondkategori'">
 						{{fund.fondkategori}}
 					</td>

@@ -1,0 +1,78 @@
+<div class="container" id="view-funds">
+    <div class="row margin-top">
+        <div class="col-xs-12 breadcrumb-links">
+            <a href="#/">Home</a> / <a href="#/list-funds">List Funds</a> / View Fund Details
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">
+
+		</div>
+		<div class="col-xs-9">
+			<table ng-table="fundDetailsParams" class="table">
+				<tr ng-repeat="fund in $data">
+					<td data-title="'Fond Namn'" sortable="'fondnamn'">
+						{{fund.fondnamn}}
+					</td>
+					<td data-title="'Instrument Namn'" sortable="'instrumentnamn'">
+						{{fund.instrumentnamn}}
+					</td>
+
+					<td data-title="'Country Name'" sortable="'countryname'">
+						{{fund.countryname}}
+					</td>
+					<td data-title="'Holding Percent'" sortable="'holdingpercent'">
+						{{fund.holdingpercent}}
+					</td>
+
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<h3>Funds By Sector</h3>
+		<hr />
+        <div class="col-xs-6" fund-sector-chart data="data.fundSectors" style="height: 250px">
+		</div>
+		<div class="col-xs-6">
+			<table ng-table="fundSectorsParams" class="table">
+				<tr ng-repeat="fund in $data">
+					<td data-title="'Sector'" sortable="'sector'">
+						{{fund.sector}}
+					</td>
+
+					<td data-title="'Valuta'" sortable="'valuta'">
+						{{fund.valuta}}
+					</td>
+					<td data-title="'Holding Percent'" sortable="'holdingpercent'">
+						{{fund.holdingpercent}}
+					</td>
+
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<h3>Funds By Country</h3>
+		<hr />
+        <div fund-country-chart class="col-xs-6" style="height: 250px">
+		</div>
+		<div class="col-xs-6">
+			<table ng-table="fundCountriesParams" class="table">
+				<tr ng-repeat="fund in $data">
+					<td data-title="'Country Name'" sortable="'countryname'">
+						{{fund.countryname}}
+					</td>
+
+					<td data-title="'Valuta'" sortable="'valuta'">
+						{{fund.valuta}}
+					</td>
+					<td data-title="'Holding Percent'" sortable="'holdingpercent'">
+						{{fund.holdingpercent}}
+					</td>
+
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

@@ -73,6 +73,7 @@ body {
   background: #fff;
   font-family: "Montserrat";
   color: #333333 !important;
+  font-size: 12px;
 }
 .row {
   margin-left: 0 !important;
@@ -419,9 +420,6 @@ ul.sidebar .sidebar-list .menu-icon {
 .widget .widget-body table thead {
   background: #fafafa;
 }
-.widget .widget-body table thead * {
-  font-size: 14px !important;
-}
 .widget .widget-body table tbody * {
   font-size: 13px !important;
 }
@@ -512,7 +510,6 @@ ul.sidebar .sidebar-list .menu-icon {
   cursor: pointer;
 }
 #tab-metric .nav-tabs.nav-justified .title {
-  font-size: 14px;
   color: #767676;
   display: block;
   clear: both;
@@ -1800,4 +1797,18 @@ hr {
 .chart-line {
   padding: 15px;
   background-color: #fff;
+}
+.footer {
+  background: #3a3b3f;
+  color: #fff;
+  padding: 20px;
+}
+.footer a {
+  color: #9599a3;
+}
+.footer a:hover {
+  color: #fff;
+}
+.footer .unstyled {
+  list-style-type: none;
 }

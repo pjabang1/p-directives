@@ -23,7 +23,7 @@ angular.module('Pension').config(['$stateProvider', '$urlRouterProvider',
             templateUrl: 'pension/tpls/list-funds.html'
         })
          .state('view-fund', {
-            url: '/view-fund/:phoneId',
+            url: '/view-fund/:fund',
             controller: 'ViewFundCtrl',
             templateUrl: 'pension/tpls/view-fund.html'
         })
@@ -438,9 +438,114 @@ angular.module('Pension').controller('ListFundsCtrl', ['$scope', '$filter', 'ngT
 			}
 		});
 	}]);
-angular.module('Pension').controller('ViewFundCtrl', ['$scope', function($scope) {
-        $scope.phoneId = $routeParams.phoneId;
-    }]);
+angular.module('Pension').controller('ViewFundCtrl', ['$scope', '$filter', 'ngTableParams', 'dataFactory', '$stateParams', function($scope, $filter, ngTableParams, dataFactory, $stateParams) {
+		$scope.fund = $stateParams.fund;
+
+		$scope.data = {};
+
+		$scope.data.fundSectors = [];
+
+
+
+		$scope.fundDetailsParams = new ngTableParams({
+			page: 1, // show first page
+			count: 10, // count per page
+			sorting: {
+				fondtyp: 'asc'     // initial sorting
+			}
+		}, {
+			total: 0, // length of data
+			getData: function($defer, params) {
+				// use build-in angular filter
+				dataFactory.getFundDetails($scope.fund)
+						.success(function(data) {
+							// console.log(data.length);
+							// data = response;
+							// update table params
+							params.total(data.length);
+
+							// set new data
+							var orderedData = params.sorting() ?
+									$filter('orderBy')(data, params.orderBy()) :
+									data;
+
+							$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+						})
+						.error(function(error) {
+							$scope.status = 'Unable to load customer data: ' + error.message;
+						});
+
+			}
+		});
+
+		$scope.fundSectorsParams = new ngTableParams({
+			page: 1, // show first page
+			count: 10, // count per page
+			sorting: {
+				fondtyp: 'asc'     // initial sorting
+			}
+		}, {
+			total: 0, // length of data
+			getData: function($defer, params) {
+				// use build-in angular filter
+				dataFactory.getFundSectors($scope.fund)
+						.success(function(data) {
+							// console.log(data.length);
+							// data = response;
+							// update table params
+							$scope.data.fundSectors = [];
+							angular.forEach(data, function(value, key) {
+								if(value.sector === null) {
+									value.sector = 'Other';
+								}
+								$scope.data.fundSectors.push({"label": value.sector, "value": parseFloat(value.holdingpercent)});
+							});
+							params.total(data.length);
+							// set new data
+							var orderedData = params.sorting() ?
+									$filter('orderBy')(data, params.orderBy()) :
+									data;
+
+							$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+						})
+						.error(function(error) {
+							$scope.status = 'Unable to load customer data: ' + error.message;
+						});
+
+			}
+		});
+
+		$scope.fundCountriesParams = new ngTableParams({
+			page: 1, // show first page
+			count: 10, // count per page
+			sorting: {
+				fondtyp: 'asc'     // initial sorting
+			}
+		}, {
+			total: 0, // length of data
+			getData: function($defer, params) {
+				// use build-in angular filter
+				dataFactory.getFundCountries($scope.fund)
+						.success(function(data) {
+							// console.log(data.length);
+							// data = response;
+							// update table params
+							params.total(data.length);
+							// set new data
+							var orderedData = params.sorting() ?
+									$filter('orderBy')(data, params.orderBy()) :
+									data;
+
+							$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+						})
+						.error(function(error) {
+							$scope.status = 'Unable to load customer data: ' + error.message;
+						});
+
+			}
+		});
+
+	}]);
 angular.module('Pension')
 		.factory('dataFactory', ['$http', function($http) {
 
@@ -448,21 +553,29 @@ angular.module('Pension')
 				var urlBase = 'http://107.170.53.98/pension-fund/api/web/app.php';
 				var dataFactory = {};
 
-				dataFactory.countries = function() {
-					return $http.get(urlBase);
+				dataFactory.getFundDetails = function(fund) {
+					return $http.get(urlBase + '/fund/details', {
+						params: {fund: fund}
+					});
 				};
 
-				dataFactory.details = function() {
-					return $http.get(urlBase);
+				dataFactory.getFundSectors = function(fund) {
+					return $http.get(urlBase + '/fund/sectors', {
+						params: {fund: fund}
+					});
 				};
-				
+
+				dataFactory.getFundCountries = function(fund) {
+					return $http.get(urlBase + '/fund/countries', {
+						params: {fund: fund}
+					});
+				};
+
 				dataFactory.getFunds = function() {
 					return $http.get(urlBase + '/fund/funds');
 				};
 
-				dataFactory.sectors = function() {
-					return $http.get(urlBase);
-				};
+
 
 				dataFactory.listCountries = function() {
 					return $http.get(urlBase);
@@ -997,6 +1110,319 @@ function lineChart($parse) {
                     return chart;
                 });
             });
+        }
+    };
+    return directive;
+}
+;
+
+/**
+ * 
+ * 
+ */
+angular.module('Pension').directive('fundSectorChart', fundSectorChart);
+
+function fundSectorChart($parse) {
+	var directive = {
+		restrict: 'AE',
+		// templateUrl: 'pension/tpls/term/term-search-pageview.html',
+		replace: true,
+		scope: {
+			data: '='
+		},
+		//our data source would be an array
+		//passed thru chart-data attribute
+		// scope: {data: '=chartData'},
+		link: function(scope, element, attrs) {
+
+			var chart;
+
+			var svg;
+			nv.addGraph(function() {
+				chart = nv.models.pieChart()
+						.x(function(d) {
+							return d.label
+						})
+						.y(function(d) {
+							return d.value
+						})
+						// .color(d3.scale.category20b())
+						.showLabels(true);
+
+				svg = d3.select(element[0]).append('svg');
+				svg
+						.datum(scope.data)
+						.transition().duration(1200)
+
+						.call(chart);
+
+				return chart;
+			});
+
+			scope.$watch('data', function(oldValue, newValue) {
+				if (svg !== null) {
+
+					svg
+							.datum(scope.data)
+							.transition().duration(1200)
+
+							.call(chart);
+				}
+			});
+		}
+	};
+	return directive;
+}
+;
+
+/**
+ * 
+ * 
+ */
+angular.module('Pension').directive('fundCountryChart', fundCountryChart);
+
+function fundCountryChart($parse) {
+    var directive = {
+        restrict: 'AE',
+        // templateUrl: 'pension/tpls/term/term-search-pageview.html',
+        replace: true,
+        //our data source would be an array
+        //passed thru chart-data attribute
+        scope: {data: '='},
+        link: function(scope, element, attrs) {
+            //in D3, any selection[0] contains the group
+            //selection[0][0] is the DOM node
+            //but we won't need that this time
+            // var selector = element[0];
+            var chart;
+            //var color = d3.scale.linear().domain([0,1]).range(["#fed900","#39c"]);
+            var color = ["#fed900", "#39c"];
+
+            // console.log("log");
+            // var $container = "container";
+            var $element = element[0];
+            var $topoUrl = "./data/world-topo-min.json";
+            var $dataUrl = "./data/country-capitals.csv";
+
+            d3.select(window).on("resize", throttle);
+
+            var zoom = d3.behavior.zoom()
+                    .scaleExtent([1, 9])
+                    .on("zoom", move);
+
+
+            var width = $element.offsetWidth;
+            var height = width / 2;
+// var height = width / 4;
+
+            var topo, projection, path, svg, g;
+
+            var graticule = d3.geo.graticule();
+
+            var tooltip = d3.select($element).append("div").attr("class", "tooltip hidden");
+
+            setup(width, height);
+
+            function setup(width, height) {
+                projection = d3.geo.mercator()
+                        .translate([(width / 2), (height / 2)])
+                        .scale(width / 2 / Math.PI);
+
+                path = d3.geo.path().projection(projection);
+
+                svg = d3.select($element).append("svg")
+                        .attr("width", width)
+                        .attr("height", height)
+                        .call(zoom)
+                        .on("click", click)
+                        .append("g");
+
+                g = svg.append("g");
+
+            }
+
+            d3.json($topoUrl, function(error, world) {
+
+                var countries = topojson.feature(world, world.objects.countries).features;
+
+                topo = countries;
+                draw(topo);
+
+            });
+
+
+            function getColours(r, g, b) {
+                var opc = 0.1;
+                var colours = [];
+                while (opc <= 1) {
+                    colours.push("rgba(" + r + ", " + g + ", " + b + ", " + opc + ")");
+                    opc += 0.1;
+                }
+                return colours;
+            }
+
+// var colours = getColours(41, 125, 185);
+// var colours = getColours(52, 152, 219);
+            var colours = getColours(243, 156, 18);
+            var colours = getColours(243, 156, 18);
+
+
+            var heatmapColour = d3.scale.linear()
+                    .domain(d3.range(0, 1, 1.0 / (colours.length - 1)))
+                    .range(colours);
+
+            function draw(topo) {
+
+                svg.append("path")
+                        .datum(graticule)
+                        .attr("class", "graticule")
+                        .attr("d", path);
+
+
+                g.append("path")
+                        .datum({type: "LineString", coordinates: [[-180, 0], [-90, 0], [0, 0], [90, 0], [180, 0]]})
+                        .attr("class", "equator")
+                        .attr("d", path);
+
+
+                var country = g.selectAll(".country").data(topo);
+
+                country.enter().insert("path")
+                        .attr("class", "country")
+                        .attr("d", path)
+                        .attr("id", function(d, i) {
+                    return d.id;
+                })
+                        .attr("title", function(d, i) {
+                    return d.properties.name;
+                })
+                        .attr("country", function(d, i) {
+                    return d.properties.name.toUpperCase();
+                })
+                        .style("fill", function(d, i) {
+                    return '#ccc';
+                });
+
+                //offsets for tooltips
+                var offsetL = $element.offsetLeft + 20;
+                var offsetT = $element.offsetTop + 10;
+
+                //tooltips
+                country
+                        .on("mousemove", function(d, i) {
+
+                    var mouse = d3.mouse(svg.node()).map(function(d) {
+                        return parseInt(d);
+                    });
+
+                    tooltip.classed("hidden", false)
+                            .attr("style", "left:" + (mouse[0] + offsetL) + "px;top:" + (mouse[1] + offsetT) + "px")
+                            .html(d.properties.name);
+
+                })
+                        .on("mouseout", function(d, i) {
+                    tooltip.classed("hidden", true);
+                });
+
+
+
+                //EXAMPLE: adding some capitals from external CSV file
+                d3.csv($dataUrl, function(err, capitals) {
+
+                    capitals.forEach(function(i) {
+                        addpoint(i.CapitalLongitude, i.CapitalLatitude, i.CapitalName);
+                        var percent = i.Percent;
+                        var rgb = d3.rgb('#090');
+                        //console.log(i.CountryName.toUpperCase());
+                        d3.select("[country='" + i.CountryName.toUpperCase() + "']").style("fill", function(d) {
+                            // console.log(rgb.toString());
+                            return heatmapColour(percent);
+                        });
+                    });
+
+                });
+
+            }
+
+
+            function redraw() {
+                width = $element.offsetWidth;
+                height = width / 2;
+                d3.select('svg').remove();
+                setup(width, height);
+                draw(topo);
+            }
+
+
+            function move() {
+
+                var t = d3.event.translate;
+                var s = d3.event.scale;
+                zscale = s;
+                var h = height / 4;
+
+
+                t[0] = Math.min(
+                        (width / height) * (s - 1),
+                        Math.max(width * (1 - s), t[0])
+                        );
+
+                t[1] = Math.min(
+                        h * (s - 1) + h * s,
+                        Math.max(height * (1 - s) - h * s, t[1])
+                        );
+
+                zoom.translate(t);
+                g.attr("transform", "translate(" + t + ")scale(" + s + ")");
+
+                //adjust the country hover stroke width based on zoom level
+                d3.selectAll(".country").style("stroke-width", 1.5 / s);
+
+            }
+
+
+
+            var throttleTimer;
+            function throttle() {
+                window.clearTimeout(throttleTimer);
+                throttleTimer = window.setTimeout(function() {
+                    redraw();
+                }, 200);
+            }
+
+
+//geo translation on mouse click in map
+            function click() {
+                var latlon = projection.invert(d3.mouse(this));
+                console.log(latlon);
+            }
+
+
+//function to add points and text to the map (used in plotting capitals)
+            function addpoint(lat, lon, text) {
+
+                var gpoint = g.append("g").attr("class", "gpoint");
+                var x = projection([lat, lon])[0];
+                var y = projection([lat, lon])[1];
+
+                gpoint.append("svg:circle")
+                        .attr("cx", x)
+                        .attr("cy", y)
+                        .attr("class", "point")
+                        .attr("r", 1.5);
+
+                //conditional in case a point has no associated text
+                if (text.length > 0) {
+
+                    gpoint.append("text")
+                            .attr("x", x + 2)
+                            .attr("y", y + 2)
+                            .attr("class", "text")
+                            .text(text);
+                }
+
+            }
+
         }
     };
     return directive;

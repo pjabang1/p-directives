@@ -21,7 +21,7 @@ angular.module('Pension').config(['$stateProvider', '$urlRouterProvider',
             templateUrl: 'pension/tpls/list-funds.html'
         })
          .state('view-fund', {
-            url: '/view-fund/:phoneId',
+            url: '/view-fund/:fund',
             controller: 'ViewFundCtrl',
             templateUrl: 'pension/tpls/view-fund.html'
         })
