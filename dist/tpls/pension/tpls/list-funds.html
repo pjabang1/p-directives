@@ -13,20 +13,20 @@
                     <input type="text" ng-model="selected" typeahead="fund.fondnamn for fund in funds | filter:$viewValue | limitTo:15" class="form-control" id="FundName" placeholder="Fund Name" tooltip="Some helper information to appear here"  tooltip-trigger="focus" tooltip-placement="right">
                 </div>
                 <div class="form-group">
-					<select class="form-control" ng-model="selectedCountry" ng-options="country.countryname for country in listCountries">
+					<select class="form-control" ng-model="search.selectedCountry" ng-options="country.countryname for country in listCountries">
 						<option value="">All Geographies</option>
 					</select>
                 </div>
                 <div class="form-group">
 					<span  class="nullable">
-						<select class="form-control" ng-model="selectedSector" ng-options="sector.sector for sector in listSectors">
+						<select class="form-control" ng-model="search.selectedSector" ng-options="sector.sector for sector in listSectors">
 							<option value="">All Sectors</option>
 						</select>
 					</span>
                 </div>
 				<div class="form-group">
 					<span  class="nullable">
-						<select class="form-control" ng-model="selectedFundCategory" ng-options="fundCategory.category for fundCategory in listFundCategories">
+						<select class="form-control" ng-model="search.selectedFundCategory" ng-options="fundCategory.category for fundCategory in listFundCategories">
 							<option value="">All Categories</option>
 						</select>
 					</span>
